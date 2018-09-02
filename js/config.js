@@ -1,0 +1,2 @@
+var YOUTUBE_API_KEY='AIzaSyC-4TdXzW1Iekivt5ui6hy9f1mq__22YtA';
+var FORECAST_API_KEY='a83c15e85776aeb6a2b2fd253b30d643';

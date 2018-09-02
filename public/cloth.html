@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SMirror</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../stylesheets/style2.css">
+<script src="../js/headtrackr.js"></script>
+</head>
+<body>
+	<div style="text-align: center;">
+		<canvas id="inputCanvas" width="640" height="480"
+			style="display: none"></canvas>
+		<video id="inputVideo" autoplay loop></video>
+	</div>
+	<div style="text-align: center;">
+		<image id="cnvs" src="../img/cloth/cloth3.png" width="640"
+			height="480" style="position: relative; z-index: 1;" />
+	</div>
+	<div style="text-align: center;">
+		<image id="pants" src="../img/pants/pants1.png" width="640"
+			height="480" style="position: relative; z-index: 1;" />
+	</div>
+	<script type="text/javascript">
+		var cloths = new Array();
+		var pants = new Array();
+		getcloth();
+		getpants();
+		var clothCount =0;
+		var pantsCount =0;
+		//http://www.auduno.com/headtrackr/documentation/reference.html
+		//http://ourcodeworld.com/articles/read/151/top-5-best-face-tracking-and-recognition-related-javascript-libraries
+		
+		var d = document;
+		var videoInput = document.getElementById('inputVideo');
+		var canvasInput = document.getElementById('inputCanvas');
+
+		var htracker = new headtrackr.Tracker();
+		htracker.init(videoInput, canvasInput);
+		htracker.start();
+
+		d.addEventListener('facetrackingEvent', function(event) {
+			updateFontSize(event);
+		});
+		var cnvs = document.getElementById("cnvs");
+		var p = document.getElementById("pants");
+		//var context = cnvs.getContext("2d");
+		//var cloth = new Image();
+		//cloth.src = "./img/cloth.png";
+
+		function updateFontSize(ev) {
+			//context.clearRect(cloth, 0, 0,300,300);
+			console.log(ev.x + ',' + ev.y + ',' + ev.width + ',' + ev.height);
+
+			cnvs.style.left = (340 - parseInt(ev.x)) + 'px';
+			cnvs.style.top = (parseInt(ev.y) - 360) + 'px';
+			
+			p.style.left = (340 - parseInt(ev.x)) + 'px';
+			p.style.top = (parseInt(ev.y)-420) + 'px';
+			//  cnvs.style.width= ev.width+"px"; 
+			// cnvs.style.height=ev.height+"px";
+		}
+		
+		function nextcloth(){
+			clothCount++;
+			$('#cnvs').attr('src',cloths[clothCount%cloths.length])
+		}
+		function prevcloth(){
+			clothCount--;
+			if(clothCount<0)
+				clothCount = cloths.length-1;
+			$('#cnvs').attr('src',cloths[clothCount%cloths.length])
+		}
+		
+		function nextpants(){
+			pantsCount++;
+			$('#pants').attr('src',pants[pantsCount%pants.length])
+		}
+		function prevpants(){
+			pantsCount--;
+			if(pantsCount<0)
+				pantsCount = cloths.length-1;
+			$('#pants').attr('src',pants[pantsCount%pants.length])
+		}
+		
+		function getcloth() {
+			var data = {};
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(data),
+				url : 'http://127.0.0.1:3000/cloth',
+				success : resultcloth,
+				error : function(request, status, error) {
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:" + error);
+				}
+			});
+		}
+		function getpants() {
+			var data = {};
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(data),
+				url : 'http://127.0.0.1:3000/pants',
+				success : resultpants,
+				error : function(request, status, error) {
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:" + error);
+				}
+			});
+		}
+		function resultcloth(result) {
+			console.log('cloth success');
+			var mydata = JSON.parse(result);
+			var f = true;
+			var number = 0;
+			console.log(mydata);
+			$.each(mydata.path, function(i, d) {
+				 cloths.push(d["path"]);
+			});
+		}
+		function resultpants(result) {
+			console.log('cloth success');
+			var mydata = JSON.parse(result);
+			var f = true;
+			var number = 0;
+			console.log(mydata);
+			$.each(mydata.path, function(i, d) {
+				 pants.push(d["path"]);
+			});
+		}
+	</script>
+</body>
+
+</html>

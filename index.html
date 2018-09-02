@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SMirror</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./stylesheets/style2.css">
+<link rel="stylesheet" type="text/css" href="./stylesheets/animate.css">
+<script src="./js/greeting.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="./js/clock.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.5.0/annyang.min.js"></script>
+<script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+<script src="./js/annyang.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="./js/config.js"></script>
+<script src="./js/getHttpData.js"></script>
+<script src="./js/forecast.js"></script>
+<script src="./js/musicPlayer.js"></script>
+<script src="./js/youtube.js"></script>
+<script src="./js/bus.js"></script>
+<script src="./js/map.js"></script>
+<script src="./js/news.js"></script>
+
+</head>
+<body onload="startTime()">
+	<div id="mirror">
+		<div id="jb-container">
+			<div id="jb-header">
+				<div id="divDate" class="neon" style="margin-top: -35px">
+					<h1>
+						<div id="date"></div>
+					</h1>
+					<h2>
+						<div id="clock"></div>
+					</h2>
+				</div>
+
+				<div id="divWeath">
+					<div style="float: left; margin-top: 20px; margin-right: 20px">
+						<img id="weathericon" width="100" height="100">
+					</div>
+					<div style="float: right">
+						<P class="category">
+							현재온도<br> <SPAN class="fcon" id="tempe"></SPAN> 현재습도 <SPAN
+								class="fcon" id="humi"></SPAN>
+						</P>
+					</div>
+				</div>
+			</div>
+
+			<div id="jb-content">
+				<div id="gMap" class="Notosan" style="display: none">
+					<div id="map"></div>
+					<br /> <font color="white">
+						<p style="font-size: 9pt">
+							* <span style="color: #6799FF; margin-right: 3px">간선</span> <span
+								style="color: #86E57F; margin-right: 3px">지선</span> <span
+								style="color: #FAED7D; margin-right: 3px">마을</span> <span
+								style="color: #FFC19E; margin-right: 3px">경기</span> <span
+								style="color: #F15F5F; margin-right: 3px">광역</span> <span
+								style="color: #A566FF; margin-right: 3px">인천</span> <span
+								style="color: #BDBDBD; margin-right: 3px">순환</span> <span
+								style="color:; margin-right: 3px">공항</span> *
+						</p> [ 현재 정류장 / 버스번호 / 도착 예정시간 / 다음 정류장 ]
+						<hr width=70% color=white>
+					</font>
+					<div id="stoplist"></div>
+				</div>
+				<div id="greeting" class="dneon"
+					style="display: none; padding: 400px 0px 0px 0px;"></div>
+				<div id="youtube" style="display: none">
+					<div id="player"></div>
+				</div>
+				<div id="question" class="question" style="display: none">
+
+					<h2 class="qsub">▼ 아래의 질문이 모두 사용 가능합니다 ▼</h2>
+
+					<P></P>
+					<P class="title">01. 사용 가능한 질문</P>
+					<class="light-grey"> 사용 가능한 질문을 보여줍니다</class>
+					<P class="title">02. 대화하기</P>
+					<class="light-grey">※ 대화하기는 명령어가 아닙니다. 아래의 명령이 사용 가능합니다. ※</class>
+					<P class="qsub">
+						<class="light-grey">안녕</class>
+						<br>
+						<class="light-grey">몇 살이야/니</class>
+						<br>
+						<class="light-grey">지금 몇 시야</class>
+						<br>
+						<class="light-grey">오늘 날짜</class>
+						<br>
+						<class="light-grey">사라져</class>
+						<br>
+						<class="light-grey">돌아와</class>
+					</P>
+
+					<P class="title">03. 홈으로</P>
+					<class="light-grey">홈 스크린으로 돌아갑니다</class>
+
+					<P class="title">04. "_______" 동영상 재생</P>
+					<class="light-grey">※ _______ 동영상을 재생하며, 다음 명령이 사용 가능해집니다.
+					※</class>
+					<P class="qsub">
+						<class="light-grey">동영상 (그만 or 정지)</class>
+						<br>
+						<class="light-grey">동영상 (재생 or 시작 or 플레이)</class>
+						<br>
+						<class="light-grey">동영상 (일시정지 or 멈춰)</class>
+						<br>
+						<class="light-grey">*초 (앞으로 or 뒤로)</class>
+						<br>
+						<class="light-grey">(이전 or 다음) 동영상</class>
+						<br>
+					</P>
+					<P class="title">05. "_______" 정류장</P>
+					<class="light-grey">※ _______ 정류장이 지도에 나타나며, 다음 명령이 사용
+					가능해집니다. ※</class>
+					<P class="qsub">
+						<class="light-grey">_______ 도착 정보 (숫자하나씩 말씀하세요.)</class>
+						<br>
+						<class="light-grey">지도 사이즈 숫자 (eg:18)</class>
+						<br>
+						<class="light-grey">지도 (확대 or 축소)</class>
+						<br>
+						<class="light-grey">지도 (위로, 아래로, 오른쪽으로, 왼쪽으로)</class>
+						<br>
+						<class="light-grey">지도 줌 크기 (주움으로 발음하면 편해요)</class>
+						<br>
+					</P>
+					<P class="title">06. 음악 (틀어 or 재생)</P>
+					<class="light-grey">※ 저장된 음악을 재생하며, 다음 명령이 사용 가능해집니다. ※</class>
+					<P class="qsub">
+						<class="light-grey">음악 (꺼 or 정지) </class>
+						<br>
+						<class="light-grey">(이전 or 다음) 곡 </class>
+						<br>
+						<class="light-grey">음악 일시정지 </class>
+						<br>
+						<class="light-grey">음악 다시 재생 </class>
+						<br>
+						<class="light-grey">가사 </class>
+						<br>
+						<class="light-grey">*번 음악 (재생 or 삭제) </class>
+						<br>
+						<class="light-grey">음악 새로고침 </br>
+						(http://localhost:3000/public/upload.html에서 음악 추가 후 새로고침하여 들을 수
+						있습니다.)</class>
+						<br>
+					</P>
+					<P class="title">07. 속보</P>
+					<P class="qsub">
+						<class="light-grey">속보 링크</class>
+						<br>
+						<class="light-grey">링크 종료</class>
+						<br>
+						<class="light-grey">속보 그만</class>
+						<br>
+					</P>
+					<P class="title">08. 옷장</P>
+					<P class="qsub">
+						<class="light-grey">옷 그만</class>
+						<br>
+					</P>
+					<P class="title">09. 안경</P>
+					<P class="qsub">
+						<class="light-grey">안경 그만</class>
+						<br>
+					</P>
+				</div>
+			</div>
+
+			<div id="jb-footer">
+				<div id="news">
+					<div id="ntitle"></div>
+				</div>
+				<div id="vresult">
+					<div id="guide" class="resultNeon">User :</div>
+					<br>
+					<div id="result" class="result"></div>
+					<br>
+					<div id="guide2" class="resultNeon">Mirror :</div>
+					<br>
+					<div id="result2" class="result"></div>
+					<br>
+				</div>
+
+				<div id="mp3">
+					<div class="mplayer">음악 추가 ->
+						http://localhost:3000/public/upload.html</div>
+
+					<audio id="audio" preload="true">
+					</audio>
+
+					<div id="albumimg" style="float: left">
+						<div id="albumart" style="z-index: 1;">
+							<img id="art" width="500" height="500">
+						</div>
+						<div id="lpack"
+							style="display: none; background-color: rgba(0, 0, 0, 0.6); width: 500px; height: 500px; position: relative; top: -504px; z-index: 2;">
+							<span id="lyric"></span>
+						</div>
+					</div>
+					<div id="music"
+						style="float: left; margin-left: 30px; margin-top: -30px">
+						<div id="audioplayer">
+							<button id="pButton" class="pause" onclick="play()"></button>
+							<div id="timeline">
+								<div id="playhead"></div>
+							</div>
+						</div>
+						<div id="playlist" class="mplayer"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+
+<script async defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-4TdXzW1Iekivt5ui6hy9f1mq__22YtA&callback=initMap">
+   
+</script>
+<script>
+	$(document).ready(function() {
+		getForecast();
+		getGreeting();
+		$('#greeting').slideDown("slow", function() {
+			console.log('complete');
+		});
+		mpInit();
+	});
+</script>
+
+</html>

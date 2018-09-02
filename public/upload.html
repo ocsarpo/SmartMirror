@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MirrorMusic</title>
+</head>
+<body>
+	<h2>♪ 스마트미러에서 듣고 싶은 음악을 넣어보세요 ♬</h2>
+	
+	<form method="post" enctype="multipart/form-data"
+		action="/process/audio">
+		<table>
+			<tr>
+				<td><label></label></td>
+				<td><input type="file" name="audio" /></td>
+			</tr>
+		</table>
+		<td><input type="submit" value="업로드" name="submit" />
+	</form>
+</body>
+</html>
