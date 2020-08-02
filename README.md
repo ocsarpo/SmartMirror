@@ -4,7 +4,7 @@
  음성으로 컨트롤하는 웹 입니다.
  NodeJS JAVASCRIPT JQUERY HTML CSS  섞어  막~~~  섞어
 
-첫 Nodejs Project 16년 1월 2월 간 제작.
+첫 Nodejs Project 16년 10월 12월 간 제작.
 
 18년 8월 2일 다시 켜보았다가 CORS 때문에 정류장 조회, 음악재생 안되서 AS함
 
